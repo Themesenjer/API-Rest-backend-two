@@ -1,37 +1,49 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
+using FacturasAPI.Models;
+using FacturasAPI.Repositories;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios al contenedor
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen();
+
+// Configure MongoDB settings
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection("MongoDbSettings"));
+
+// Add MongoDB client to the service collection
+builder.Services.AddSingleton<IMongoClient, MongoClient>(sp =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Facturas API", Version = "v1" });
+    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    return new MongoClient(settings.ConnectionString);
 });
+
+// Add the database to the service collection
+builder.Services.AddSingleton(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var mongoClient = sp.GetRequiredService<IMongoClient>();
+    return mongoClient.GetDatabase(settings.DatabaseName);
+});
+
+// Add repository to the service collection
+builder.Services.AddSingleton<IFacturaRepository, FacturaRepository>();
 
 var app = builder.Build();
 
-// Configurar el pipeline de la HTTP request
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Facturas API V1");
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
-app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
