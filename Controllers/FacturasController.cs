@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using FacturasAPI.Models;
 using FacturasAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace FacturasAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class FacturasController : ControllerBase
     {
         private readonly IFacturaRepository _facturaRepository;
