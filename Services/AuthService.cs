@@ -15,7 +15,8 @@ namespace FacturasAPI.Services
 
         public async Task Register(Usuario usuario)
         {
-            // Implementa la lógica de registro aquí
+            // Encriptar la contraseña antes de guardar el usuario
+            usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
             await _usuarioRepository.CreateAsync(usuario);
         }
 
