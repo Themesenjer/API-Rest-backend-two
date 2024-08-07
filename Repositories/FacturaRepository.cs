@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using FacturasAPI.Models;
 using MongoDB.Driver;
-using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FacturasAPI.Repositories
 {
@@ -15,31 +14,34 @@ namespace FacturasAPI.Repositories
             _facturas = database.GetCollection<Factura>("Facturas");
         }
 
-        public async Task<IEnumerable<Factura>> GetAll()
+        public async Task<IEnumerable<Factura>> GetAllAsync()
         {
-            return await _facturas.Find(f => true).ToListAsync();
+            return await _facturas.Find(factura => true).ToListAsync();
         }
 
-        public async Task<Factura> GetById(string id)
+        public async Task<Factura> GetByIdAsync(string id)
         {
-            return await _facturas.Find(f => f.Id == id).FirstOrDefaultAsync();
+            return await _facturas.Find<Factura>(factura => factura.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task Create(Factura factura)
+        public async Task CreateAsync(Factura factura)
         {
             await _facturas.InsertOneAsync(factura);
         }
 
-        public async Task<bool> Update(Factura factura)
+        public async Task UpdateAsync(string id, Factura factura)
         {
-            var result = await _facturas.ReplaceOneAsync(f => f.Id == factura.Id, factura);
-            return result.IsAcknowledged && result.ModifiedCount > 0;
-        }
+            var filter = Builders<Factura>.Filter.Eq(f => f.Id, id);
 
-        public async Task<bool> Delete(string id)
+            // Mantener el campo _id igual al del documento existente
+            var updateDefinition = Builders<Factura>.Update
+                .Set(f => f.Descripcion, factura.Descripcion);
+
+            await _facturas.UpdateOneAsync(filter, updateDefinition);
+        }
+        public async Task DeleteAsync(string id)
         {
-            var result = await _facturas.DeleteOneAsync(f => f.Id == id);
-            return result.IsAcknowledged && result.DeletedCount > 0;
+            await _facturas.DeleteOneAsync(factura => factura.Id == id);
         }
     }
 }

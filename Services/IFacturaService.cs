@@ -2,9 +2,9 @@ using FacturasAPI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FacturasAPI.Repositories
+namespace FacturasAPI.Services
 {
-    public interface IFacturaRepository
+    public interface IFacturaService
     {
         Task<IEnumerable<Factura>> GetAllAsync();
         Task<Factura> GetByIdAsync(string id);

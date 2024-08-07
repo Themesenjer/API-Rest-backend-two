@@ -7,8 +7,9 @@ namespace FacturasAPI.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
-        public string Descripcion { get; set; } = null!;
+        [BsonElement("Descripcion")]
+        public string Descripcion { get; set; } = string.Empty;
     }
 }
