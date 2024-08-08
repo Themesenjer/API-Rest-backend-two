@@ -9,6 +9,7 @@ using FacturasAPI.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure logging
@@ -29,6 +30,7 @@ builder.Services.AddSwaggerGen(options =>
         In = ParameterLocation.Header,
         Description = "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
     });
+
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -43,6 +45,9 @@ builder.Services.AddSwaggerGen(options =>
             new string[] {}
         }
     });
+
+    // Agregar el filtro para excluir la autorización en AuthController
+    options.OperationFilter<SwaggerExcludeAuthFilter>();
 });
 
 // Configure MongoDB settings

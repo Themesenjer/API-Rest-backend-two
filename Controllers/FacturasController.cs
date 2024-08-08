@@ -7,61 +7,74 @@ using System.Threading.Tasks;
 
 namespace FacturasAPI.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class FacturasController : ControllerBase
     {
         private readonly IFacturaService _facturaService;
-        private readonly ILogger<FacturasController> _logger; // Agregar ILogger
 
-        public FacturasController(IFacturaService facturaService, ILogger<FacturasController> logger)
+        public FacturasController(IFacturaService facturaService)
         {
             _facturaService = facturaService;
-            _logger = logger; // Inicializar ILogger
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Factura>>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            _logger.LogInformation("Iniciando GET all facturas");
             var facturas = await _facturaService.GetAllAsync();
-            return Ok(facturas);
+            return Ok(new
+            {
+                code = 200,
+                messages = new[] { "Consulta exitosa" },
+                data = facturas
+            });
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Factura>> GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            _logger.LogInformation("Iniciando GET factura con ID: {Id}", id);
             var factura = await _facturaService.GetByIdAsync(id);
             if (factura == null)
             {
-                _logger.LogWarning("Factura con ID: {Id} no encontrada", id);
-                return NotFound();
+                return NotFound(new
+                {
+                    code = 404,
+                    message = "Factura no encontrada"
+                });
             }
-            return Ok(factura);
+            return Ok(new
+            {
+                code = 200,
+                messages = new[] { "Consulta exitosa" },
+                data = factura
+            });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Factura factura)
+        public async Task<IActionResult> Create(Factura factura)
         {
-            _logger.LogInformation("Iniciando POST para crear nueva factura");
             await _facturaService.CreateAsync(factura);
-            return CreatedAtAction(nameof(GetById), new { id = factura.Id }, factura);
+            return CreatedAtAction(nameof(GetById), new { id = factura.Id }, new
+            {
+                code = 201,
+                messages = new[] { "Factura creada exitosamente" },
+                data = factura
+            });
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, Factura factura)
         {
-            _logger.LogInformation("Iniciando PUT para actualizar factura con ID: {Id}", id);
             var existingFactura = await _facturaService.GetByIdAsync(id);
             if (existingFactura == null)
             {
-                _logger.LogWarning("Factura con ID: {Id} no encontrada para actualización", id);
-                return NotFound();
+                return NotFound(new
+                {
+                    code = 404,
+                    message = "Factura no encontrada para actualización"
+                });
             }
-            // Mantener el campo _id del documento existente
-            factura.Id = id;
             await _facturaService.UpdateAsync(id, factura);
             return NoContent();
         }
@@ -69,12 +82,14 @@ namespace FacturasAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            _logger.LogInformation("Iniciando DELETE para eliminar factura con ID: {Id}", id);
             var existingFactura = await _facturaService.GetByIdAsync(id);
             if (existingFactura == null)
             {
-                _logger.LogWarning("Factura con ID: {Id} no encontrada para eliminación", id);
-                return NotFound();
+                return NotFound(new
+                {
+                    code = 404,
+                    message = "Factura no encontrada para eliminación"
+                });
             }
             await _facturaService.DeleteAsync(id);
             return NoContent();
