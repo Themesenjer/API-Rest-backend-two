@@ -32,13 +32,25 @@ namespace FacturasAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
-            var token = await _authService.Authenticate(login.Email, login.Password);
-            if (token == null)
+            var authResponse = await _authService.Authenticate(login.Email, login.Password);
+            if (authResponse == null)
             {
                 return Unauthorized();
             }
 
-            return Ok(new AuthResponse { Token = token, Email = login.Email });
+            return Ok(authResponse);
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+        {
+            var authResponse = await _authService.RefreshToken(request.Token, request.RefreshToken);
+            if (authResponse == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(authResponse);
         }
     }
 
