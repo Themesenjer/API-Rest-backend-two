@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FacturasAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3df9bd5452c32a9a4e2178ac95ea587a48b3916f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+217465848a6f844ba21a4e9979a93cb0ab5c2610")]
 [assembly: System.Reflection.AssemblyProductAttribute("FacturasAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FacturasAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
