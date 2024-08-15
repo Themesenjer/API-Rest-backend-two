@@ -1,4 +1,3 @@
-// Program.cs
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -70,6 +69,9 @@ builder.Services.AddSingleton<IFacturaRepository, FacturaRepository>();
 builder.Services.AddSingleton<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFacturaService, FacturaService>();
+
+// Register IUsuarioService and UsuarioService
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
