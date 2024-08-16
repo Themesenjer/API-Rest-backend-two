@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj": {}
+    "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\Second\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj": {
+    "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\Second\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\Second\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj",
         "projectName": "FacturasAPI",
-        "projectPath": "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj",
+        "projectPath": "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\Second\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj",
         "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\obj\\",
+        "outputPath": "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\Second\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config"
