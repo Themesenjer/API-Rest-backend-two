@@ -1,5 +1,6 @@
 using FacturasAPI.Models;
 using MongoDB.Driver;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FacturasAPI.Repositories
@@ -21,6 +22,11 @@ namespace FacturasAPI.Repositories
         public async Task CreateAsync(Usuario usuario)
         {
             await _usuarios.InsertOneAsync(usuario);
+        }
+
+        public async Task<List<Usuario>> GetAllAsync()
+        {
+            return await _usuarios.Find(_ => true).ToListAsync();  // Obtiene todos los usuarios
         }
     }
 }

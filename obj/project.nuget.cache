@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "W7502Y1bZqY=",
+  "dgSpecHash": "x+Oim7Vkxsc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj",
+  "projectFilePath": "C:\\Users\\PC\\Desktop\\Yavirac Pablo Reyes\\Second\\KFC practicas\\API-Rest-Bills\\FacturasAPI\\FacturasAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",

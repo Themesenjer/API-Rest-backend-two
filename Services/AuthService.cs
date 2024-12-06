@@ -32,13 +32,13 @@ namespace FacturasAPI.Services
             _logger.LogInformation("Registrando nuevo usuario: {Email}", usuario.Email);
             // Encriptar la contraseña antes de guardar el usuario
             usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
-            await _usuarioRepository.CreateAsync(usuario); // Asegurarse de usar await aquí
+            await _usuarioRepository.CreateAsync(usuario); // Asegúrate de usar await aquí
         }
 
         public async Task<AuthResponse?> Authenticate(string email, string password)
         {
             _logger.LogInformation("Autenticando usuario: {Email}", email);
-            var usuario = await _usuarioRepository.GetByEmailAsync(email); // Asegurarse de usar await aquí
+            var usuario = await _usuarioRepository.GetByEmailAsync(email); // Asegúrate de usar await aquí
             if (usuario == null || !BCrypt.Net.BCrypt.Verify(password, usuario.Password))
             {
                 _logger.LogWarning("Autenticación fallida para usuario: {Email}", email);

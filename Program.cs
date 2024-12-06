@@ -9,7 +9,6 @@ using FacturasAPI.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure logging
@@ -46,7 +45,6 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 
-    // Agregar el filtro para excluir la autorización en AuthController
     options.OperationFilter<SwaggerExcludeAuthFilter>();
 });
 
@@ -54,14 +52,12 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 
-// Add MongoDB client to the service collection
 builder.Services.AddSingleton<IMongoClient, MongoClient>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
     return new MongoClient(settings.ConnectionString);
 });
 
-// Add the database to the service collection
 builder.Services.AddSingleton(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
@@ -69,13 +65,14 @@ builder.Services.AddSingleton(sp =>
     return mongoClient.GetDatabase(settings.DatabaseName);
 });
 
-// Add repositories and services to the service collection
 builder.Services.AddSingleton<IFacturaRepository, FacturaRepository>();
 builder.Services.AddSingleton<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IFacturaService, FacturaService>();  // Registro del FacturaService
+builder.Services.AddScoped<IFacturaService, FacturaService>();
 
-// Configure JWT authentication
+// Register IUsuarioService and UsuarioService
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
 {
@@ -95,16 +92,26 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Issuer"],
             IssuerSigningKey = new SymmetricSecurityKey(key),
-            ClockSkew = TimeSpan.Zero // Opcional: para minimizar el tiempo de tolerancia en la validación de token
+            ClockSkew = TimeSpan.Zero
         };
     });
+
+// Enable CORS/ logica de la habilitacion CORS para permitir aceptar solicitudes del frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
 // Add Error Handling Middleware
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -113,8 +120,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");  // Uso de CORS policy
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
